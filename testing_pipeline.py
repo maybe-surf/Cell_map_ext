@@ -7,8 +7,7 @@ Created on Wed Apr  5 20:42:13 2023
 """
 
 #%%
-  #import the up to cell detection spydata before running this script
-  
+  #import the up to cell detection spydata before running this script 
   import sys 
   sys.path.append('/home/georgelab/Documents/ClearMap2')
   
@@ -92,3 +91,21 @@ Created on Wed Apr  5 20:42:13 2023
   
   
   source = ws.source('cells', postfix='filtered')
+  
+  #%%
+  #creating cells_filtered plottable file
+  d_cells_filt_path = '/media/georgelab/LaCie/Lieselot_Collab/INTOX_Durakilmed/i1/debug_cells_filtered.npy'
+  d_cells_filt_plot_path = '/media/georgelab/LaCie/Lieselot_Collab/INTOX_Durakilmed/i1/debug_cells_filtered_plot.npy'
+  shape = [300, 300, 100] #manually calculated
+  source_path = '/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/create_plottable.py'
+  
+  exec(open(source_path).read())
+  
+  create_plottable_cells(d_cells_filt_path, d_cells_filt_plot_path, shape)
+  
+  
+  
+  
+  
+  
+  
