@@ -30,10 +30,10 @@ ws.create_debug('stitched', slicing=slicing);
 
 io.delete_file(ws.filename('cells', postfix='maxima')) # deletes existing cells maxima file
 
-if(os.isfile(d_cells_raw_plot_path)):
+if(os.path.isfile(d_cells_raw_plot_path)):
     os.remove(d_cells_raw_plot_path)
     print("deletion one successful")
-if(os.isfile(d_cells_filt_plot_path)):
+if(os.path.isfile(d_cells_filt_plot_path)):
     os.remove(d_cells_filt_plot_path)
     print("deletion two successful")
 
