@@ -6,7 +6,7 @@ Created on Thu Apr  6 11:52:46 2023
 """
 
 #%%
-  #import the up to cell detection spydata before running this script 
+  #import the "up to cell detection spydata" before running this script from Documents/Lieselot/Sergei 
   import sys 
   sys.path.append('/home/georgelab/Documents/ClearMap2')
   
