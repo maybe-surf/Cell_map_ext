@@ -25,8 +25,10 @@ Created on Thu Apr  6 11:52:46 2023
   ws.debug = False
   
   resources_directory = settings.resources_path
+  
+  #%%
+  ws.debug = True
 
-#%% 
   slicing = (slice(300, 600),slice(1200, 1500),slice(950, 1050));
   
   shape = [300, 300, 100] #manually calculated based of slicing
@@ -43,6 +45,11 @@ Created on Thu Apr  6 11:52:46 2023
   cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
   cell_detection_parameter['maxima_detection']['threshold'] = 700 #only maxima above this intensity are detected
   cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
+  
+  thresholds = { # can filter on any column in the cells table
+      'source' : None, #Measured intensity
+      'size'   : (20,900) #filter cells based on size range
+      }
   
 #%%
 
