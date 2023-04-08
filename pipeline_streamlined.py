@@ -47,7 +47,7 @@ Created on Thu Apr  6 11:52:46 2023
   cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
   
   thresholds = { # can filter on any column in the cells table
-      'source' : None, #Measured intensity
+      'source' : None, #Measured intensity-
       'size'   : (20,900) #filter cells based on size range
       }
   
