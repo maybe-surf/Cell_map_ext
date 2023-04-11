@@ -27,29 +27,94 @@ Created on Thu Apr  6 11:52:46 2023
   resources_directory = settings.resources_path
   
   #%%
+  
+  io.delete_file(ws.filename('cells', postfix='maxima')) # deletes existing cells maxima file
+  io.delete_file(ws.filename('cells', postfix='bgremove')) # deletes existing cells maxima file
   ws.debug = True
 
   slicing = (slice(300, 600),slice(1200, 1500),slice(950, 1050));
   
   shape = [300, 300, 100] #manually calculated based of slicing
   
+  thresholds = { # can filter on any column in the cells table
+      'source' : None, #Measured intensity-
+      'size'   : (20,900) #filter cells based on size range
+      }
+  
+  #%% Default
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+
+
+  cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
+  
+  
+  #%% Hammond
+   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+  #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
+  #cell_detection_parameter['dog_filter'] = dict(shape = None, sigma = None, sigma2 = None),;
+
+  cell_detection_parameter['background_correction']['shape'] = (7,7);
+  cell_detection_parameter['background_correction']['form'] = 'Disk';
+  #cell_detection_parameter['background_correction']['save'] = ws.filename('cells', postfix='bgremove');
+    
+  cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
+  cell_detection_parameter['maxima_detection']['threshold'] = 700 #only maxima above this intensity are detected
+  #cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
+
+  cell_detection_parameter['shape_detection']['threshold'] = 1200;
+
+  cell_detection_parameter['intensity_detection']['measure'] = ['source']
+  
+  #%% Alex
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+
+  cell_detection_parameter['dog_filter'] = dict(shape = (7,7,7)); #(6,6,11)
+  cell_detection_parameter['shape_detection']['threshold'] = 500
+  
+  #%% Sergei 1
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
   #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
   #cell_detection_parameter['background'] = None;
-  cell_detection_parameter['background_correction']['shape'] = (7,7);
+  cell_detection_parameter['background_correction']['shape'] = (7, 7); # 3;
   cell_detection_parameter['background_correction']['form'] = 'Disk';
   #cell_detection_parameter['background_correction']['save'] = ws.filename('cells', postfix='bgremove');
   cell_detection_parameter['intensity_detection']['measure'] = ['source'];
   #cell_detection_parameter['shape_detection']['threshold'] = 1200;
   
   cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
-  cell_detection_parameter['maxima_detection']['threshold'] = 700 #only maxima above this intensity are detected
+  cell_detection_parameter['maxima_detection']['threshold'] = 400 #450 #700 #only maxima above this intensity are detected
   cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
   
-  thresholds = { # can filter on any column in the cells table
-      'source' : None, #Measured intensity-
-      'size'   : (20,900) #filter cells based on size range
-      }
+  cell_detection_parameter['shape_detection']['threshold'] = 450
+  
+  #%% Sergei 2
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+  #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
+  #cell_detection_parameter['background'] = None;
+  cell_detection_parameter['background_correction']['shape'] = (10, 10); # 3;
+  cell_detection_parameter['background_correction']['form'] = 'Disk';
+  cell_detection_parameter['background_correction']['save'] = ws.filename('cells', postfix='bgremove');
+  cell_detection_parameter['intensity_detection']['measure'] = ['source'];
+  #cell_detection_parameter['shape_detection']['threshold'] = 1200;
+  
+  cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
+  cell_detection_parameter['maxima_detection']['threshold'] = 400 #450 #700 #only maxima above this intensity are detected
+  cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
+  
+  cell_detection_parameter['shape_detection']['threshold'] = 450
+  
+  #%% 3
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+  #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
+  #cell_detection_parameter['background'] = None;
+  cell_detection_parameter['background_correction'] = None
+  #cell_detection_parameter['shape_detection']['threshold'] = 1200;
+  
+  cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
+  cell_detection_parameter['maxima_detection']['threshold'] = 400 #450 #700 #only maxima above this intensity are detected
+  cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
+  
+  cell_detection_parameter['shape_detection']['threshold'] = 450
   
 #%%
 
