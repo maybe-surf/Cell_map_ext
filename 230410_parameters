@@ -14,7 +14,7 @@ Created on Mon Apr 10 17:25:56 2023
   # cell_detection_parameter['dog_filter'] = dict(shape = None, sigma = None, sigma2 = None),;
   # cell_detection_parameter['maxima_detection'] = dict(h_max = None, shape = 5, threshold = 0, valid = True, save = False);
   # cell_detection_parameter['shape_detection'] - dict(threshold = 700, save = False)
-  # cell_detection_parameter['intensity_detection']= dict(method = 'max', shape = 3, measure = ['source', 'background']);
+  # cell_detection_parameter['intensity_detection']= dict(method = 'max', shape = 3, measure = ['source', 'background'])
 
 
   #%% Hammond
@@ -33,14 +33,14 @@ Created on Mon Apr 10 17:25:56 2023
 
   cell_detection_parameter['shape_detection']['threshold'] = 1200;
 
-  cell_detection_parameter['intensity_detection']['measure'] = ['source'];
+  cell_detection_parameter['intensity_detection']['measure'] = ['source']
 
 
   #%% Alex
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
 
   cell_detection_parameter['dog_filter'] = dict(shape = (7,7,7)); #(6,6,11)
-  cell_detection_parameter['shape_detection']['threshold'] = 500;
+  cell_detection_parameter['shape_detection']['threshold'] = 500
 
 
 
