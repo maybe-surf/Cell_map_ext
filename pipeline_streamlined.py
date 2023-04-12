@@ -125,8 +125,27 @@ Created on Thu Apr  6 11:52:46 2023
   #cell_detection_parameter['intensity_detection']['measure'] = None;
   #cell_detection_parameter['dog_filter'] = None
 
-    
+  #%% Sergei 4
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+  cell_detection_parameter['background_correction']['shape'] = (10, 10); # 3;
+  cell_detection_parameter['background_correction']['form'] = 'Disk';
+  cell_detection_parameter['background_correction']['save'] = ws.filename('cells', postfix='bgremove');
+  cell_detection_parameter['intensity_detection']['measure'] = ['source'];
+  cell_detection_parameter['maxima_detection']['shape'] = 2 #5 #size of structural element - should be near typical size of cell
+  cell_detection_parameter['maxima_detection']['threshold'] = 300 #450 #700 #only maxima above this intensity are detected
+  cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
+  cell_detection_parameter['shape_detection']['threshold'] = 300
   
+  #%% Sergei 5
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+  cell_detection_parameter['background_correction']['shape'] = (12, 12); # 3;
+  cell_detection_parameter['background_correction']['form'] = 'Disk';
+  cell_detection_parameter['background_correction']['save'] = ws.filename('cells', postfix='bgremove');
+  cell_detection_parameter['intensity_detection']['measure'] = ['source'];
+  cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
+  cell_detection_parameter['maxima_detection']['threshold'] = 400 #450 #700 #only maxima above this intensity are detected
+  cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
+  cell_detection_parameter['shape_detection']['threshold'] = 400
 #%%
 
   code_path = '/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/detect_filter.py'  
