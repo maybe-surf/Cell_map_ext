@@ -41,14 +41,14 @@ Created on Thu Apr  6 11:52:46 2023
       'size'   : (20,900) #filter cells based on size range
       }
   
-  #%% Default
+  #%% Default - too few detections
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
 
 
   cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
   
   
-  #%% Hammond
+  #%% Hammond - too few detections
    cell_detection_parameter = cells.default_cell_detection_parameter.copy();
   #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
   #cell_detection_parameter['dog_filter'] = dict(shape = None, sigma = None, sigma2 = None),;
@@ -65,55 +65,39 @@ Created on Thu Apr  6 11:52:46 2023
 
   cell_detection_parameter['intensity_detection']['measure'] = ['source']
   
-  #%% Alex
+  #%% Alex - most detections are false but close
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
 
   cell_detection_parameter['dog_filter'] = dict(shape = (7,7,7)); #(6,6,11)
   cell_detection_parameter['shape_detection']['threshold'] = 500
   
-  #%% Sergei 1
+  #%% Sergei 1 - almost as good as Sergei 2
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
-  #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
-  #cell_detection_parameter['background'] = None;
   cell_detection_parameter['background_correction']['shape'] = (7, 7); # 3;
   cell_detection_parameter['background_correction']['form'] = 'Disk';
-  #cell_detection_parameter['background_correction']['save'] = ws.filename('cells', postfix='bgremove');
-  cell_detection_parameter['intensity_detection']['measure'] = ['source'];
-  #cell_detection_parameter['shape_detection']['threshold'] = 1200;
-  
+  cell_detection_parameter['intensity_detection']['measure'] = ['source'];  
   cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
   cell_detection_parameter['maxima_detection']['threshold'] = 400 #450 #700 #only maxima above this intensity are detected
   cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
-  
   cell_detection_parameter['shape_detection']['threshold'] = 450
   
   #%% Sergei 2 - optimal as of 04/11/2023 7pm
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
-  #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
-  #cell_detection_parameter['background'] = None;
   cell_detection_parameter['background_correction']['shape'] = (10, 10); # 3;
   cell_detection_parameter['background_correction']['form'] = 'Disk';
   cell_detection_parameter['background_correction']['save'] = ws.filename('cells', postfix='bgremove');
   cell_detection_parameter['intensity_detection']['measure'] = ['source'];
-  #cell_detection_parameter['shape_detection']['threshold'] = 1200;
-  
   cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
   cell_detection_parameter['maxima_detection']['threshold'] = 400 #450 #700 #only maxima above this intensity are detected
   cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
-  
   cell_detection_parameter['shape_detection']['threshold'] = 450
   
-  #%% Sergei 3 - bad
+  #%% Sergei 3 - bad, too many false positives
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
-  #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
-  #cell_detection_parameter['background'] = None;
   cell_detection_parameter['background_correction'] = None
-  #cell_detection_parameter['shape_detection']['threshold'] = 1200;
-  
   cell_detection_parameter['maxima_detection']['shape'] = 3 #5 #size of structural element - should be near typical size of cell
   cell_detection_parameter['maxima_detection']['threshold'] = 400 #450 #700 #only maxima above this intensity are detected
   cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
-  
   cell_detection_parameter['shape_detection']['threshold'] = 450
   
   
