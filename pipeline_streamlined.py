@@ -87,7 +87,7 @@ Created on Thu Apr  6 11:52:46 2023
   
   cell_detection_parameter['shape_detection']['threshold'] = 450
   
-  #%% Sergei 2
+  #%% Sergei 2 - optimal as of 04/11/2023 7pm
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
   #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
   #cell_detection_parameter['background'] = None;
@@ -103,7 +103,7 @@ Created on Thu Apr  6 11:52:46 2023
   
   cell_detection_parameter['shape_detection']['threshold'] = 450
   
-  #%% 3
+  #%% Sergei 3 - bad
   cell_detection_parameter = cells.default_cell_detection_parameter.copy();
   #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
   #cell_detection_parameter['background'] = None;
@@ -115,6 +115,33 @@ Created on Thu Apr  6 11:52:46 2023
   cell_detection_parameter['maxima_detection']['save'] = ws.filename('cells', postfix='maxima')
   
   cell_detection_parameter['shape_detection']['threshold'] = 450
+  
+  
+  #%% Lieselot 1
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+  #cell_detection_parameter['iullumination_correction']['flatfield'] = None;
+
+  cell_detection_parameter['background_correction']['shape'] = (30, 30);
+  cell_detection_parameter['background_correction']['form'] = 'Disk';
+  cell_detection_parameter['background_correction']['save'] = ws.filename('cells', postfix='bgremove');
+  
+  #%% Lieselot 2
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+  cell_detection_parameter['iullumination_correction']['flatfield'] = None;
+  cell_detection_parameter['background_correction'] = None;
+  cell_detection_parameter['shape_detection']['threshold'] = 1500
+    
+  #%% Lieselot 3
+  cell_detection_parameter = cells.default_cell_detection_parameter.copy();
+  cell_detection_parameter['iullumination_correction'] = None
+  #cell_detection_parameter['background_correction'] = None;
+  #cell_detection_parameter['shape_detection']['threshold'] = 500;
+  
+  #cell_detection_parameter['maxima_detection'] = None;
+  #cell_detection_parameter['intensity_detection']['measure'] = None;
+  #cell_detection_parameter['dog_filter'] = None
+
+    
   
 #%%
 
