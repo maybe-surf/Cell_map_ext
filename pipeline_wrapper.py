@@ -20,7 +20,7 @@ exec(open(create_dirs_path).read())
 #%% run analysis
 
 num_brains = 0
-limit = 5
+limit = 1
 
 for brain in dirs.keys():
     brain_dirs = dirs.get(brain)
@@ -34,7 +34,7 @@ for brain in dirs.keys():
     directory = brain_dirs.get("dir_brain")  #1 animal  
   
     expression_raw      = brain_dirs.get("dir_raw")     #neurons      
-    expression_auto     = brain_dirs.get("brain.auto")  #structure
+    expression_auto     = brain_dirs.get("dir_auto")  #structure
   
     ws = wsp.Workspace('CellMap', directory=directory);
     ws.update(raw=expression_raw, autofluorescence=expression_auto)
