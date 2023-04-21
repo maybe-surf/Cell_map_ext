@@ -20,14 +20,14 @@ for line in file:
             num = int(line_list[1][1:2])
         dirs[num] = {"dir_brain" : "/media/georgelab/Rett1/Lieselot_Collab/R" + str(num)}
         if("red" in line_list[1].lower()):
-            dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_Ultrall_C00_xyz-Table Z<Z,4>.ome.tif"})
+            dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
         else:
-            dirs[num].update({"dir_auto" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_Ultrall_C00_xyz-Table Z<Z,4>.ome.tif"})
+            dirs[num].update({"dir_auto" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
     else:
         if("red" in line_list[1].lower()):
-            dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_Ultrall_C00_xyz-Table Z<Z,4>.ome.tif"})
+            dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
         else:
-            dirs[num].update({"dir_auto" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_Ultrall_C00_xyz-Table Z<Z,4>.ome.tif"})
+            dirs[num].update({"dir_auto" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
     i += 1
 
 file2 = open(set2_path)
@@ -40,14 +40,14 @@ for line in file2:
         num = int(line_list[1][1:3])
         dirs[num] = {"dir_brain" : "/media/georgelab/Rett1/Lieselot_Box2/R" + str(num)}
         if("red" in line_list[1].lower()):
-            dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_Ultrall_C00_xyz-Table Z<Z,4>.ome.tif"})
+            dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
         else:
-            dirs[num].update({"dir_auto" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_Ultrall_C00_xyz-Table Z<Z,4>.ome.tif"})
+            dirs[num].update({"dir_auto" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
     else:
         if("red" in line_list[1].lower()):
-            dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_Ultrall_C00_xyz-Table Z<Z,4>.ome.tif"})
+            dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
         else:
-            dirs[num].update({"dir_auto" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_Ultrall_C00_xyz-Table Z<Z,4>.ome.tif"})
+            dirs[num].update({"dir_auto" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
     i += 1    
 
 
