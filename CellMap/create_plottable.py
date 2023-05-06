@@ -1,3 +1,8 @@
+'''
+The file is used to create a plottable version of cells_raw or cells_filtered
+arrays for visulizations purposes to be used with clearmap's plotting interface
+'''
+
 import numpy as np
 
 #detected_cells_path = "" #raw or filtered
@@ -5,10 +10,6 @@ import numpy as np
 #plottable_cells_path = "" #sink where we save the file
 
 #shape = []
-
-#testing git_commit
-
-#testing git_commit 2
 
 def create_plottable_cells(detected_cells_path, plottable_cells_path, shape):
     detected_cells = np.load(detected_cells_path)

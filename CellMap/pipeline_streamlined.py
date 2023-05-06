@@ -3,6 +3,10 @@
 Created on Thu Apr  6 11:52:46 2023
 
 @author: serge
+
+This script is used to test different processing and cell_detection parameters for CellMap.
+It assumes that a .spydata file is imported so that you don't have to rerun the entire
+pipeline every time to test a new set of parameters
 """
 
 #%%
@@ -148,7 +152,7 @@ Created on Thu Apr  6 11:52:46 2023
   cell_detection_parameter['shape_detection']['threshold'] = 400
 #%%
 
-  code_path = '/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/detect_filter.py'  
+  code_path = '/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/CellMap/detect_filter.py'  
   
   exec(open(code_path).read())
  

@@ -3,6 +3,10 @@
 Created on Thu Apr  6 11:58:12 2023
 
 @author: serge
+
+This file is a part of pipeline_streamline.py. It carries out the cell detection
+and filtering as well as creates plottable versions of output arrays
+
 """
 
 import os
@@ -23,7 +27,7 @@ d_cells_raw_plot_path = '/media/georgelab/LaCie/Lieselot_Collab/INTOX_Durakilmed
 d_cells_filt_path = '/media/georgelab/LaCie/Lieselot_Collab/INTOX_Durakilmed/i1/debug_cells_filtered.npy'
 d_cells_filt_plot_path = '/media/georgelab/LaCie/Lieselot_Collab/INTOX_Durakilmed/i1/debug_cells_filtered_plot.npy'
 
-source_path = '/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/create_plottable.py'
+source_path = '/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/CellMap/create_plottable.py'
   
 #Prepare workspace
 ws.create_debug('stitched', slicing=slicing);
