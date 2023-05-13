@@ -31,28 +31,41 @@ os.system(command)
 output = np.load(output_path)
 brain = output[:, :, :, 0]
 brain_shape = brain.shape
+num_slices = 20
 
-def DFS3d(x, y, z):
-    if(x < x_init):
+def valid(x, y, z, num_slices):
+    if(x >= 0 and x < 2160):
+        if(y >= 0 and y < 2560):
+            if(z >= 0 and z <= num_slices):
+                return True
+    return False
+
+def DFS3d(x, y, z, brain):
+    # if(x < x_init):
+    #     return
+    # if(x == x_init and y < y_init):
+    #     return
+    if((x, y, z) in visited):
         return
-    if(x == x_init and y < y_init):
-        return
-    if((x, y) in visited):
-        return
-    ones.append((x, y))
-    visited.append((x, y))
-    if(x == 0 or y == 0):
+    ones.append((x, y, z))
+    visited.append((x, y, z))
+    if(x == 0 or y == 0): #ok since we are not going to have cells on the edges of slice
         return
     if(x == slice_shape[0] - 1 or y == slice_shape[1] - 1):
         return
-    if(image[x, y+1] == 1):
-        dfs_cell(x, y+1, image)
-    if(image[x+1, y] == 1):
-        dfs_cell(x+1, y, image)
-    if(image[x, y-1] == 1):
-        dfs_cell(x, y-1, image)
-    if(image[x-1, y] == 1):
-        dfs_cell(x-1, y, image)
+    #recursive cases:
+    if(brain[x, y, z+1] == 1):
+        DFS3d(x, y, z+1, brain)
+    if(brain[x, y+1, z] == 1):
+        DFS3d(x, y+1, z, brain)
+    if(brain[x, y, z-1] == 1):
+        DFS3d(x, y, z-1, brain)
+    if(brain[x, y-1, z] == 1):
+        DFS3d(x, y-1, z, brain)
+    if(brain[x+1, y, z] == 1):
+        DFS3d(x+1, y, z, brain)
+    if(brain[x-1, y, z] == 1):
+        DFS3d(x-1, y, z, brain)
     return
 
 for x in range(brain_shape[0]):
