@@ -4,16 +4,29 @@ Created on Fri May 12 00:16:03 2023
 
 @author: serge
 """
+#%%
 import os
 import numpy as np
 
-trained_model_path = ''
-data_path = ''
-output_path = ''
+trained_model_path = '/home/georgelab/Documents/Lieselot/Sergei/R1_3d_0.ilp'
+data_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/test_small.npy'
+output_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/results1.npy'
 
-command = "./run_ilastik.sh --headless --project=" + trained_model_path + " --output_format=numpy --output_filename_format=" + " --export_dtype=uint8 --export_source=\"Simple Segmentation\" --stack_along=\"t\" \"" + data_path + "\""
+#%%
+os.system('pwd')
+os.chdir('Downloads')
+
+os.chdir('ilastik-1.4.0-Linux')
+os.system('pwd')
+
+
+#%%
+
+command = "./run_ilastik.sh --headless --project=" + trained_model_path + " --output_format=numpy --output_filename_format=" + output_path + " --export_dtype=uint8 --export_source=\"Simple Segmentation\" --stack_along=\"t\" \"" + data_path + "\""
 
 os.system(command)
+
+#%%
 
 output = np.load(output_path)
 brain = output[:, :, :, 0]
