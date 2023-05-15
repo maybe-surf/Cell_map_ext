@@ -4,4 +4,4 @@
  
  CellMap folder contains several useful scripts for CellMap pipeline.
  
- Currently work in progress on integrating ilastik to detect cells more efficiently using its pixel classification algorithm
+ ilastik folder contains integration of ilastik to detect cells more efficiently using its pixel classification algorithm
