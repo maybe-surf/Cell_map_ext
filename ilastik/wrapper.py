@@ -48,10 +48,10 @@ for brain in dirs.keys():
   
     resources_directory = settings.resources_path
     
-    exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
+    #exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
     
     data_path = directory + "/stitched.npy"
-    output_path = directory + "/cells_raw.npy" #check the file name
+    output_path = directory + "/cells_detected.npy" #check the file name
     
     exec(open(cell_detection_path).read())
     
