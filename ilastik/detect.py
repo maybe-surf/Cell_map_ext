@@ -8,16 +8,16 @@ Created on Fri May 12 00:16:03 2023
 import os
 #import numpy as np
 
-trained_model_path = '/home/georgelab/Documents/Lieselot/Sergei/R1_3d_0.ilp'
-data_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/test_small.npy'
-output_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/results1.npy'
+#trained_model_path = '/home/georgelab/Documents/Lieselot/Sergei/R1_3d_0.ilp'
+#data_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/test_small.npy'
+#output_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/results1.npy'
 
 #%%
-os.system('pwd')
-os.chdir('Downloads') #test it out with absolute path
+#os.system('pwd')
+os.chdir('/home/georgelab/Downloads') #test it out with absolute path
 
 os.chdir('ilastik-1.4.0-Linux')
-os.system('pwd')
+#os.system('pwd')
 
 
 #%%
@@ -28,17 +28,18 @@ os.system(command)
 
 #%%
 import numpy as np
-verbose = True
+verbose = False
 
-output_path = "D:/R1_new/results1.npy"
-stitched_path = "D:/R1_new/test_small.npy"
+#output_path = "D:/R1_new/results1.npy"
+stitched_path = data_path
 
+print("begin loading data")
 output = np.load(output_path)
 print("loaded data")
 stitched = np.load(stitched_path)
 print("loaded stitched")
 
-brain = output[:, :, 8:12, 0]
+brain = output[:, :, :, 0]
 brain_shape = brain.shape
 num_slices = brain_shape[2]
 cells_raw = []
@@ -104,6 +105,7 @@ def fix_cell(ones, stitched):
 print("here 2")
 
 for x in range(brain_shape[0]):
+    print("filtering slice")
     for y in range(brain_shape[1]):
         for z in range(brain_shape[2]):
             if(brain[x, y, z] == 1):
@@ -123,6 +125,7 @@ for x in range(brain_shape[0]):
                 cells_raw.append(cell_info)
                 if(verbose):
                     print("done")
+np.save(directory + '/cells_raw.npy', cells_raw)
                     
 #%%
 def test_brain(brain):
