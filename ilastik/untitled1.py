@@ -116,15 +116,19 @@ cells_raw = []
 
 brain = [output3d[270*i:270*(i+1), :, :] for i in range(8)]
 start = time.time()
-threads = []
-for brain_slice in brain:
-    t = th.Thread(target = process_brain, args = (brain_slice, cells_raw))
-    threads.append(t)
-    t.start()
-# for process in processes:
-#     process.join()
-for t in threads:
-    t.join()
+
+processes = []
+
+
+# threads = []
+# for brain_slice in brain:
+#     t = th.Thread(target = process_brain, args = (brain_slice, cells_raw))
+#     threads.append(t)
+#     t.start()
+# # for process in processes:
+# #     process.join()
+# for t in threads:
+#     t.join()
     
 # for brain_slice in brain:
 #     print("slice")
