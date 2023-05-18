@@ -28,61 +28,68 @@ os.system(command)
 
 #%%
 import numpy as np
+import time
+import multiprocessing as mp
+import threading as th
 verbose = False
 
-#output_path = "D:/R1_new/results1.npy"
-stitched_path = data_path
+output_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/cells_detected.npy'
+stitched_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/stitched.npy'
 
-print("begin loading data")
 output = np.load(output_path)
 print("loaded data")
 stitched = np.load(stitched_path)
 print("loaded stitched")
 
-brain = output[:, :, :, 0]
-brain_shape = brain.shape
-num_slices = brain_shape[2]
-cells_raw = []
+output3d = output[:, :, :, 0]
+#brain = [output3d[270*i:270*(i+1), :, :] for i in range(8)]
+#brain_shape = brain.shape
+#num_slices = brain_shape[2]
+#cells_raw = []
 
 print("here")
 
-def valid(x, y, z, num_slices):
-    if(x >= 0 and x < 2160):
-        if(y >= 0 and y < 2560):
-            if(z >= 0 and z < num_slices):
+def valid(x, y, z, brain_shape):
+    if(x >= 0 and x < brain_shape[0]):
+        if(y >= 0 and y < brain_shape[1]):
+            if(z >= 0 and z < brain_shape[2]):
                 return True
     return False
 
-def DFS3d(x, y, z, brain):
+
+def DFS3d(x, y, z, brain, brain_shape, ones):
     # if(x < x_init):
     #     return
     # if(x == x_init and y < y_init):
     #     return
     #base case:
-    if((x, y, z) in visited):
+    if((x, y, z) in ones):
         return
     ones.append((x, y, z))
-    visited.append((x, y, z)) #see if not neccessary
+    if(len(ones) > 20):
+        return
+    #see if not neccessary
     # if(x == 0 or y == 0): #ok since we are not going to have cells on the edges of slice
     #     return
     # if(x == slice_shape[0] - 1 or y == slice_shape[1] - 1):
     #     return
     #recursive cases:
-    if(valid(x, y, z+1, num_slices) and brain[x, y, z+1] == 1):
-        DFS3d(x, y, z+1, brain)
-    if(valid(x, y+1, z, num_slices) and brain[x, y+1, z] == 1):
-        DFS3d(x, y+1, z, brain)
-    if(valid(x, y, z-1, num_slices) and brain[x, y, z-1] == 1):
-        DFS3d(x, y, z-1, brain)
-    if(valid(x, y-1, z, num_slices) and brain[x, y-1, z] == 1):
-        DFS3d(x, y-1, z, brain)
-    if(valid(x+1, y, z, num_slices) and brain[x+1, y, z] == 1):
-        DFS3d(x+1, y, z, brain)
-    if(valid(x-1, y, z, num_slices) and brain[x-1, y, z] == 1):
-        DFS3d(x-1, y, z, brain)
+    #if(valid(x, y, z+1, brain_shape) and brain[x, y, z+1] == 1):
+        #DFS3d(x, y, z+1, brain, brain_shape, ones)
+    if(valid(x, y+1, z, brain_shape) and brain[x, y+1, z] == 1):
+        DFS3d(x, y+1, z, brain, brain_shape, ones)
+    #if(valid(x, y, z-1, brain_shape) and brain[x, y, z-1] == 1):
+        #DFS3d(x, y, z-1, brain, brain_shape, ones)
+    if(valid(x, y-1, z, brain_shape) and brain[x, y-1, z] == 1):
+        DFS3d(x, y-1, z, brain, brain_shape, ones)
+    if(valid(x+1, y, z, brain_shape) and brain[x+1, y, z] == 1):
+        DFS3d(x+1, y, z, brain, brain_shape, ones)
+    if(valid(x-1, y, z, brain_shape) and brain[x-1, y, z] == 1):
+        DFS3d(x-1, y, z, brain, brain_shape, ones)
     return
 
-def fix_cell(ones, stitched):
+
+def fix_cell(ones, stitched, brain):
     for coord in ones:
         brain[coord] = 2
     sum_x = 0
@@ -96,56 +103,148 @@ def fix_cell(ones, stitched):
         sum_stit += stitched[coord]
     x_coord = round(sum_x/len(ones))
     y_coord = round(sum_y/len(ones))
-    z_coord = round(sum_z/len(ones))
+    z_coord = ones[0][0]
     source = round(sum_stit/len(ones))
     size = len(ones)
     #brain[x_coord, y_coord, z_coord] = 1
     return (x_coord, y_coord, z_coord, size, source)
 
+
 print("here 2")
 
-for x in range(brain_shape[0]):
-    print("filtering slice")
-    for y in range(brain_shape[1]):
-        for z in range(brain_shape[2]):
-            if(brain[x, y, z] == 1):
-                x_init = x
-                y_init = y
-                z_init = z
-                ones = []
-                visited = []
-                if(verbose):
-                    print("start")
-                DFS3d(x, y, z, brain)
-                #check the size of ones and if you need the filtering
-                if(len(ones) > 1):
-                    cell_info = fix_cell(ones, stitched)
-                else:
-                    cell_info = (x, y, z, 1, stitched[x, y, z])
-                cells_raw.append(cell_info)
-                if(verbose):
-                    print("done")
-np.save(directory + '/cells_raw.npy', cells_raw)
-                    
-#%%
-def test_brain(brain):
+def process_brain(brain_slice, cells_raw):
+    print("started")
+    brain_shape = brain_slice.shape
+    #num_slices = brain_shape[2]
+    cells = []
     for x in range(brain_shape[0]):
         for y in range(brain_shape[1]):
             for z in range(brain_shape[2]):
-                if(brain[x, y, z] == 1):
-                    if(valid(x, y, z+1, num_slices) and brain[x, y, z+1] == 1):
-                        return False
-                    if(valid(x, y+1, z, num_slices) and brain[x, y+1, z] == 1):
-                        return False
-                    if(valid(x, y, z-1, num_slices) and brain[x, y, z-1] == 1):
-                        return False
-                    if(valid(x, y-1, z, num_slices) and brain[x, y-1, z] == 1):
-                        return False
-                    if(valid(x+1, y, z, num_slices) and brain[x+1, y, z] == 1):
-                        return False
-                    if(valid(x-1, y, z, num_slices) and brain[x-1, y, z] == 1):
-                        return False
-    return True
+                if(brain_slice[x, y, z] == 1):
+                    ones = []
+                    if(verbose):
+                        print("start")
+                    DFS3d(x, y, z, brain_slice, brain_shape, ones)
+                    #check the size of ones and if you need the filtering
+                    if(len(ones) > 1):
+                        cell_info = fix_cell(ones, stitched, brain_slice)
+                    else:
+                        cell_info = (x, y, z, 1, stitched[x, y, z])
+                    cells.append(cell_info)
+                    if(verbose):
+                        print("done")
+    #return cells
+    cells_raw += cells
+    print("done slice")
+
+
+
+def process_brain_mp(brain_slice, qq): #add an extra argument for a shift and make the multiprocess
+#take the tuple of brain_slice and shift as arguments in addition to the queue
+    print("started process")
+    brain_shape = brain_slice.shape
+    #num_slices = brain_shape[2]
+    cells = []
+    for x in range(brain_shape[0]):
+        if(x % 10 == 0):
+            print("processing slice with x =", x)
+        for y in range(brain_shape[1]):
+            for z in range(brain_shape[2]):
+                if(brain_slice[x, y, z] == 1):
+                    ones = []
+                    if(verbose):
+                        print("start")
+                    DFS3d(x, y, z, brain_slice, brain_shape, ones)
+                    #check the size of ones and if you need the filtering
+                    if(len(ones) > 20):
+                        for coord in ones:
+                            brain_slice[coord] = 2
+                        break
+                    if(len(ones) > 1):
+                        cell_info = fix_cell(ones, stitched, brain_slice)
+                    else:
+                        cell_info = (x, y, z, 1, stitched[x, y, z])
+                    cells.append(cell_info)
+                    if(verbose):
+                        print("done")
+    #return cells
+    #cells_raw += cells
+    qq.put(cells)
+    print("done process")
+
+
+
+cells_raw = []
+
+brain = [output3d[216*i:216*(i+1), :, :] for i in range(10)]
+start = time.time()
+
+#threads = []
+#for brain_slice in brain:
+#    t = th.Thread(target = process_brain_thread, args = (brain_slice, cells_raw))
+#    threads.append(t)
+#    t.start()
+#for t in threads:
+#    t.join()
+
+#for brain_slice in brain:
+#     print("slice")
+#     new = process_brain(brain_slice, cells_raw)
+#     print("done")
+#     #cells_raw += new
+
+qq = mp.Queue()
+processes = []
+for brain_slice in brain:
+    p = mp.Process(target = process_brain_mp, args = (brain_slice, qq))
+    processes.append(p)
+    p.start()
+
+#for p in processes:
+#    p.join()
+
+while 1:
+    running = any(p.is_alive() for p in processes)
+    while not qq.empty():
+        cells_raw += qq.get()
+    if not running:
+        break
+
+
+for p in processes:
+    p.join()
+
+
+
+end = time.time()
+print("Total time is:", end - start)
+
+#%%Formatting
+
+import pandas as pd
+cellsdf = pd.DataFrame(cells_raw, columns = ["x", "y", "z", "size", "source"])
+cellsrec = cellsdf.to_records(index = False)
+np.save('/media/georgelab/Rett1/Lieselot_Collab/R1/cells_raw.npy', cellsrec)
+                    
+#%%
+# def test_brain(brain):
+#     for x in range(brain_shape[0]):
+#         for y in range(brain_shape[1]):
+#             for z in range(brain_shape[2]):
+#                 if(brain[x, y, z] == 1):
+#                     if(valid(x, y, z+1, num_slices) and brain[x, y, z+1] == 1):
+#                         return False
+#                     if(valid(x, y+1, z, num_slices) and brain[x, y+1, z] == 1):
+#                         return False
+#                     if(valid(x, y, z-1, num_slices) and brain[x, y, z-1] == 1):
+#                         return False
+#                     if(valid(x, y-1, z, num_slices) and brain[x, y-1, z] == 1):
+#                         return False
+#                     if(valid(x+1, y, z, num_slices) and brain[x+1, y, z] == 1):
+#                         return False
+#                     if(valid(x-1, y, z, num_slices) and brain[x-1, y, z] == 1):
+#                         return False
+#     return True
 
 #%%
 # import pandas as pd
