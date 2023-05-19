@@ -220,7 +220,7 @@ def process_brain(brain_slice, cells_raw):
 
 
 
-def process_brain_mp(brain_slice, qq): #add an extra argument for a shift and make the multiprocess
+def process_brain_mp(brain_slice, qq, shift): #add an extra argument for a shift and make the multiprocess
 #take the tuple of brain_slice and shift as arguments in addition to the queue
     print("started process")
     brain_shape = brain_slice.shape
@@ -242,9 +242,9 @@ def process_brain_mp(brain_slice, qq): #add an extra argument for a shift and ma
                             brain_slice[coord] = 2
                         break
                     if(len(ones) > 1):
-                        cell_info = fix_cell(ones, stitched, brain_slice)
+                        cell_info = fix_cell(ones, stitched, brain_slice, shift)
                     else:
-                        cell_info = (x, y, z, 1, stitched[x, y, z])
+                        cell_info = (x + shift, y, z, 1, stitched[x, y, z])
                     cells.append(cell_info)
                     if(verbose):
                         print("done")
