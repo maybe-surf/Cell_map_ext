@@ -54,7 +54,7 @@ def create_plottable_cells(detected_cells_path, plottable_cells_path, shape):
 #create_plottable_cells(detected_cells_path, plottable_cells_path, shape)
 
 
-
+#%%
 def create_plottable_cells2(detected_cells, plottable_cells_path, shape):    
     plottable_cells = np.zeros((shape[0], shape[1], shape[2]), dtype = np.uint8)    
     i = 0
