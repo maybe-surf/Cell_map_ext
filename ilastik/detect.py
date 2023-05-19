@@ -111,7 +111,7 @@ def DFS3d(x, y, z, brain, brain_shape, ones):
     return
 
 
-def fix_cell2D(ones, stitched, brain, z):
+def fix_cell2D(ones, stitched, brain, z, shift):
     for coord in ones:
         brain[coord] = 2
     sum_x = 0
@@ -126,7 +126,7 @@ def fix_cell2D(ones, stitched, brain, z):
     source = round(sum_stit/len(ones))
     size = len(ones)
     #brain[x_coord, y_coord, z_coord] = 1
-    return (x_coord, y_coord, z, size, source)
+    return (x_coord + shift, y_coord, z, size, source)
 
 
 def fix_cell(ones, stitched, brain):
@@ -252,6 +252,33 @@ def process_brain_mp(brain_slice, qq, shift): #add an extra argument for a shift
     #cells_raw += cells
     qq.put(cells)
     print("done process")
+    
+def process_brain_mp2D(brain_slice, qq, shift): #add an extra argument for a shift and make the multiprocess
+#take the tuple of brain_slice and shift as arguments in addition to the queue
+    print("started process")
+    brain_shape = brain_slice.shape
+    #num_slices = brain_shape[2]
+    cells = []
+    for x in range(brain_shape[0]):
+        if(x % 10 == 0):
+            print("processing slice with x =", x)
+        for y in range(brain_shape[1]):
+            for z in range(brain_shape[2]):
+                if(brain_slice[x, y, z] == 1):
+                    ones = []
+                    DFS2d(x, y, z, brain_slice, brain_shape, ones)
+                    #check the size of ones and if you need the filtering
+                    if(len(ones) > 20):
+                        for coord in ones:
+                            brain_slice[coord] = 2
+                        break
+                    if(len(ones) > 1):
+                        cell_info = fix_cell2D(ones, stitched, brain_slice, z, shift)
+                    else:
+                        cell_info = (x + shift, y, z, 1, stitched[x, y, z])
+                    cells.append(cell_info)
+    qq.put(cells)
+    print("done process")
 
 
 
@@ -262,7 +289,6 @@ x_slice = brain[0].shape[0]
 shifts = [x_slice * i for i in range(num_cores)]
 
 #brain = [output3d[216*i:216*(i+1), :, :] for i in range(10)]
-start = time.time()
 
 #threads = []
 #for brain_slice in brain:
@@ -278,15 +304,15 @@ start = time.time()
 #     print("done")
 #     #cells_raw += new
 #%%
+start = time.time()
 qq = mp.Queue()
 processes = []
+i = -1
 for brain_slice in brain:
-    p = mp.Process(target = process_brain_mp, args = (brain_slice, qq))
+    i += 1
+    p = mp.Process(target = process_brain_mp2D, args = (brain_slice, qq, shifts[i]))
     processes.append(p)
     p.start()
-
-#for p in processes:
-#    p.join()
 
 while 1:
     running = any(p.is_alive() for p in processes)
