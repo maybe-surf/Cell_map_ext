@@ -1,0 +1,2 @@
+ls -R | grep '^230' >> dirs.txt
+^ means starts with
