@@ -33,10 +33,10 @@ import multiprocessing as mp
 #import threading as th
 verbose = False
 
-output_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/cells_detected.npy'
-stitched_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/test.npy'
+#output_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/cells_detected.npy'
+#stitched_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/test.npy'
 
-#stitched_path = data_path
+stitched_path = data_path
 
 output = np.load(output_path)
 print("loaded data")
@@ -82,7 +82,7 @@ def DFS3d(x, y, z, brain, brain_shape, ones):
     if((x, y, z) in ones):
         return
     ones.append((x, y, z))
-    if(len(ones) > 40):
+    if(len(ones) > 2000):
         return
     #recursive cases:
     if(valid(x, y, z+1, brain_shape) and brain[x, y, z+1] == 1):
@@ -224,7 +224,7 @@ def process_brain_mp3d(brain_slice, qq, shift): #add an extra argument for a shi
                     ones = []
                     DFS3d(x, y, z, brain_slice, brain_shape, ones)
                     #check the size of ones and if you need the filtering
-                    if(len(ones) > 40):
+                    if(len(ones) > 2000):
                         for coord in ones[:-1]:
                             brain_slice[coord] = 2
                         ones = ones[-2:-1]
@@ -336,7 +336,7 @@ print("Total time is:", end - start)
 import pandas as pd
 cellsdf = pd.DataFrame(cells_raw, columns = ["x", "y", "z", "size", "source"])
 cellsrec = cellsdf.to_records(index = False)
-np.save('/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/cells_raw.npy', cellsrec)
+np.save('/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/cells_raw_i.npy', cellsrec)
                     
 #%%
 # def test_brain(brain):

@@ -11,7 +11,7 @@ Created on Sun May 14 21:38:38 2023
  
 #%% Cell alignment
 
-source = ws.source('cells', postfix='raw')
+source = ws.source('cells', postfix='raw_i')
 
 def transformation(coordinates):
   coordinates = res.resample_points(
@@ -55,7 +55,7 @@ names = np.array(names, dtype=[('name' , 'U256')])
 import numpy.lib.recfunctions as rfn
 cells_data = rfn.merge_arrays([source[:], coordinates_transformed, label, names], flatten=True, usemask=False)
 
-io.write(ws.filename('cells'), cells_data)
+io.write(ws.filename('cells_i'), cells_data)
  
  #%% Save results
  #adding in ID and acronyms as above
@@ -82,19 +82,19 @@ io.write(ws.filename('cells'), cells_data)
  
  #%% CSV export
  
-source = ws.source('cells');
+source = ws.source('cells_i');
 header = ', '.join([h[0] for h in source.dtype.names]);
-np.savetxt(ws.filename('cells', extension='csv'), source[:], header=header, delimiter=',', fmt='%s')
+np.savetxt(ws.filename('cells_i', extension='csv'), source[:], header=header, delimiter=',', fmt='%s')
  
  #%% ClearMap 1.0 export
  
-source = ws.source('cells');
+source = ws.source('cells_i');
 
 clearmap1_format = {'points' : ['x', 'y', 'z'], 
                     'points_transformed' : ['xt', 'yt', 'zt'],
                     'intensities' : ['source', 'dog', 'background', 'size']}
 
 for filename, names in clearmap1_format.items():
-  sink = ws.filename('cells', postfix=['ClearMap1', filename]);
+  sink = ws.filename('cells_i', postfix=['ClearMap1', filename]);
   data = np.array([source[name] if name in source.dtype.names else np.full(source.shape[0], np.nan) for name in names]);
   io.write(sink, data);
