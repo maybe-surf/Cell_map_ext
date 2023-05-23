@@ -268,9 +268,17 @@ def process_brain_mp2D(brain_slice, qq, shift): #add an extra argument for a shi
                     ones = []
                     DFS2d(x, y, z, brain_slice, brain_shape, ones)
                     #check the size of ones and if you need the filtering
-                    if(len(ones) > 20):
-                        for coord in ones:
+                    if(len(ones) > 20): #the following allows to avoid stack overflow and 
+                        for coord in ones[:-1]:
                             brain_slice[coord] = 2
+                        ones = ones[-1]
+                        DFS2d(ones[0], brain, brain_shape, ones)
+                        while(len(ones) > 1):
+                            for coord in ones[:-1]:
+                                brain_slice[coord] = 2
+                            ones = ones[-1]
+                            DFS2d(ones[0], brain, brain_shape, ones)
+                        brain_slice[ones[0]] = 2
                         break
                     if(len(ones) > 1):
                         cell_info = fix_cell2D(ones, stitched, brain_slice, z, shift)
