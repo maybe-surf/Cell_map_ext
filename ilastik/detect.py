@@ -33,8 +33,10 @@ import multiprocessing as mp
 #import threading as th
 verbose = False
 
-output_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/cells_detected.npy'
-stitched_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/stitched.npy'
+output_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/cells_detected.npy'
+stitched_path = '/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/test.npy'
+
+#stitched_path = data_path
 
 output = np.load(output_path)
 print("loaded data")
@@ -225,13 +227,13 @@ def process_brain_mp3d(brain_slice, qq, shift): #add an extra argument for a shi
                     if(len(ones) > 40):
                         for coord in ones[:-1]:
                             brain_slice[coord] = 2
-                        ones = ones[-1]
-                        DFS3d(ones[0], brain, brain_shape, ones)
+                        ones = ones[-2:-1]
+                        DFS3d(ones[0][0], ones[0][1], ones[0][2], brain_slice, brain_shape, ones)
                         while(len(ones) > 1):
                             for coord in ones[:-1]:
                                 brain_slice[coord] = 2
-                            ones = ones[-1]
-                            DFS3d(ones[0], brain, brain_shape, ones)
+                            ones = ones[-2:-1]
+                            DFS3d(ones[0][0], ones[0][1], ones[0][2], brain_slice, brain_shape, ones)
                         brain_slice[ones[0]] = 2
                         break
                     if(len(ones) > 1):
@@ -309,7 +311,7 @@ processes = []
 i = -1
 for brain_slice in brain:
     i += 1
-    p = mp.Process(target = process_brain_mp3D, args = (brain_slice, qq, shifts[i]))
+    p = mp.Process(target = process_brain_mp3d, args = (brain_slice, qq, shifts[i]))
     processes.append(p)
     p.start()
 
@@ -334,7 +336,7 @@ print("Total time is:", end - start)
 import pandas as pd
 cellsdf = pd.DataFrame(cells_raw, columns = ["x", "y", "z", "size", "source"])
 cellsrec = cellsdf.to_records(index = False)
-np.save('/media/georgelab/Rett1/Lieselot_Collab/R1/cells_raw.npy', cellsrec)
+np.save('/media/georgelab/Rett1/Lieselot_Collab/R1/ilastik/cells_raw.npy', cellsrec)
                     
 #%%
 # def test_brain(brain):

@@ -50,11 +50,12 @@ for brain in dirs.keys():
     
     #exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
     
-    data_path = directory + "/stitched.npy"
-    output_path = directory + "/cells_detected.npy" #check the file name
+    #data_path = directory + "/stitched.npy"
+    #output_path = directory + "/cells_detected.npy" #check the file name
     
     #tester directories
-    
+    data_path = directory + "/ilastik/test.npy"
+    output_path = directory + "/ilastik/cells_detected.npy"
     
     exec(open(cell_detection_path).read())
     

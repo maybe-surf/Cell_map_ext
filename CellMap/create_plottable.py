@@ -67,7 +67,7 @@ def create_plottable_cells2(detected_cells, plottable_cells_path, shape):
         plottable_cells[(x, y, z)] = 1
         i += 1   
     np.save(plottable_cells_path, plottable_cells)
-    return plottable_cells
+    #return plottable_cells
 
 
 
