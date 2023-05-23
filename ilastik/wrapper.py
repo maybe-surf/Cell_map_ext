@@ -38,7 +38,7 @@ for brain in dirs.keys():
     directory = brain_dirs.get("dir_brain")  #1 animal  
   
     expression_raw      = brain_dirs.get("dir_raw")     #neurons      
-    expression_auto     = brain_dirs.get("dir_auto")  #structure
+    expression_auto     = brain_dirs.get("dir_auto")  #structure    
   
     ws = wsp.Workspace('CellMap', directory=directory);
     ws.update(raw=expression_raw, autofluorescence=expression_auto)
@@ -53,9 +53,12 @@ for brain in dirs.keys():
     data_path = directory + "/stitched.npy"
     output_path = directory + "/cells_detected.npy" #check the file name
     
+    #tester directories
+    
+    
     exec(open(cell_detection_path).read())
     
-    exec(open(pipeline2_path).read())
+    #exec(open(pipeline2_path).read())
     
     num_brains += 1
     if(num_brains == limit):
