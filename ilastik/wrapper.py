@@ -24,9 +24,11 @@ exec(open(create_dirs_path).read())
 #%% run analysis
 
 num_brains = 0
-limit = 1
+limit = 5
 
 for brain in dirs.keys():
+    if(num_brains < 1):
+        break
     brain_dirs = dirs.get(brain)
     
     import sys 
