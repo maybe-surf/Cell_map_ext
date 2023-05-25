@@ -28,7 +28,8 @@ limit = 5
 
 for brain in dirs.keys():
     if(num_brains < 1):
-        break
+        num_brains += 1
+        continue
     brain_dirs = dirs.get(brain)
     
     import sys 
