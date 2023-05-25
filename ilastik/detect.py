@@ -336,7 +336,7 @@ print("Total time is:", end - start)
 import pandas as pd
 cellsdf = pd.DataFrame(cells_raw, columns = ["x", "y", "z", "size", "source"])
 cellsrec = cellsdf.to_records(index = False)
-np.save(directory + '/cells_raw_i.npy', cellsrec)
+np.save(cells_raw_path, cellsrec)
                     
 #%%
 # def test_brain(brain):
