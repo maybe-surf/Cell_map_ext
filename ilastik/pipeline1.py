@@ -5,6 +5,46 @@ Created on Fri May 12 00:11:38 2023
 @author: serge
 """
 
+
+#%% Initialize alignment 
+
+annotation_file, reference_file, distance_file=ano.prepare_annotation_files(
+      slicing=(slice(None),slice(None),slice(0,228)), orientation=(1,2,3),
+      overwrite=False, verbose=True);
+  
+  #alignment parameter files    
+align_channels_affine_file   = io.join(resources_directory, 'Alignment/align_affine.txt')
+align_reference_affine_file  = io.join(resources_directory, 'Alignment/align_affine.txt')
+align_reference_bspline_file = io.join(resources_directory, 'Alignment/align_bspline.txt')
+
+  #%% Resample 
+  #Outputs resampled.tif
+             
+resample_parameter = {
+      "source_resolution" : (4.0625, 4.0625, 3),
+      "sink_resolution"   : (25,25,25),
+      "processes" : 4,
+      "verbose" : True,             
+      "orientation":(-1,2,3) 
+      };
+  
+io.delete_file(ws.filename('resampled'))
+  
+res.resample(ws.filename('stitched'), sink=ws.filename('resampled'), **resample_parameter)
+  
+  #%% Resample autofluorescence
+  #Outputs resampled_auto.tif
+      
+resample_parameter_auto = {
+      "source_resolution" : (4.0625,4.0625,3),
+      "sink_resolution"   : (25,25,25),
+      "processes" : 4,
+      "verbose" : True,                
+      "orientation":(-1,2,3) 
+      };   
+  
+res.resample(ws.filename('autofluorescence'), sink=ws.filename('resampled', postfix='autofluorescence'), **resample_parameter_auto)
+
  
  #%% Aignment - resampled to autofluorescence (>2min - update elastix to v5 for improved speed?)
  #33 sec

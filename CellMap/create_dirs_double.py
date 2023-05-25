@@ -5,7 +5,7 @@ Created on Mon May 22 19:54:51 2023
 @author: serge
 """
 
-dirs_path = "C:/Users/serge/codez/GitHub/Cell_map/drafts_reference/double_dirs.txt"
+dirs_path = "/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/drafts_reference/double_dirs.txt"
 
 dirs = {}
 
@@ -23,7 +23,7 @@ for line in file:
                 num = int(line_list[1][2])
         else:
             num = int(line_list[1][2])
-        if(num == 1 or num == 10):
+        if(num == 1):
             dirs[num] = {"dir_brain" : "/media/georgelab/LaCie/Lieselot_double/LC" + str(num) + "R"}
         else:
             dirs[num] = {"dir_brain" : "/media/georgelab/LaCie/Lieselot_double/LC" + str(num)}

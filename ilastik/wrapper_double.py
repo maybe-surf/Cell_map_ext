@@ -48,10 +48,11 @@ for brain in dirs.keys():
     
     #exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
     
-    data_path = directory + "/C00-mecp2/stitched.npy"
-    output_path = directory + "/C00-mecp2/cells_detected.npy" #check the file name
-    cells_raw_path = directory + "/C00-mecp2/cells_raw_i.npy"
+    data_path = directory + "/stitched.npy"
+    output_path = directory + "/cells_detected.npy" #check the file name
+    cells_raw_path = directory + "/cells_raw_i.npy"
     
+    exec(open(pipeline1_path).read())
     exec(open(cell_detection_path).read())
     
     exec(open(pipeline2_path).read())
@@ -59,7 +60,7 @@ for brain in dirs.keys():
     #foss
   
     #directories and files
-    directory = brain_dirs.get("dir_brain") + "/C00-mecp2"  #1 animal  
+    directory = brain_dirs.get("dir_brain") + "/C00-fos"  #1 animal  
   
     expression_raw      = brain_dirs.get("dir_foss")     #neurons      
     expression_auto     = brain_dirs.get("dir_auto")  #structure    
@@ -74,9 +75,11 @@ for brain in dirs.keys():
     
     #exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
     
-    data_path = directory + "/C01-fos/stitched.npy"
-    output_path = directory + "/C01-fos/cells_detected.npy" #check the file name
-    cells_raw_path = directory + "/C01-fos/cells_raw_i.npy"
+    data_path = directory + "/stitched.npy"
+    output_path = directory + "/cells_detected.npy" #check the file name
+    cells_raw_path = directory + "/cells_raw_i.npy"
+    
+    exec(open(pipeline1_path).read())
     
     exec(open(cell_detection_path).read())
     
