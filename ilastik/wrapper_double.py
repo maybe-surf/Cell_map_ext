@@ -60,7 +60,7 @@ for brain in dirs.keys():
     #foss
   
     #directories and files
-    directory = brain_dirs.get("dir_brain") + "/C00-fos"  #1 animal  
+    directory = brain_dirs.get("dir_brain") + "/C01-fos"  #1 animal  
   
 #    expression_raw      = brain_dirs.get("dir_foss")     #neurons      
 #    expression_auto     = brain_dirs.get("dir_auto")  #structure    
