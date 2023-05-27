@@ -6,6 +6,7 @@ Created on Thu May 25 23:35:33 2023
 """
 #%%
 import pandas as pd
+pd.options.mode.chained_assignment = None  # default='warn'
 
 #index = 9 #???????
 
