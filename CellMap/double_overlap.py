@@ -33,24 +33,31 @@ for cell in fos.iterrows():
     
 #%%
 import numpy as np
-cells_mecp2_path = ""
-cells_fos_path = ""
-create_plot_path = ""
+cells_mecp2_path = "/media/georgelab/LaCie/Lieselot_double/LC3/C00-mecp2/cells_raw.npy"
+cells_fos_path = "/media/georgelab/LaCie/Lieselot_double/LC3/C01-fos/cells_raw.npy"
+create_plot_path = "/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/CellMap/create_plottable.py"
 
 mecp2 = np.load(cells_mecp2_path)
+print("loaded mecp2")
 fos = np.load(cells_fos_path)
+print("loaded fos")
 
 exec(open(create_plot_path).read())
 
 shape = [2160, 2560, 1988]
-mecp2_full = [] #create_plottable_cells3(mecp2, shape)
+mecp2_full = create_plottable_cells3(mecp2, shape)
+print("created plottable")
 
 xy_margin = 4 #16 micron
 z_margin = 5 #15 micron
 
 overlap = 0
 
+i = 0
 for cell in fos:
+    if(i % 1000):
+        print("on the cell", i)
+    i += 1
     consider = mecp2_full[(cell[0]-xy_margin):(cell[0]+xy_margin), (cell[1]-xy_margin):(cell[1]+xy_margin), (cell[2]-z_margin):(cell[2]+z_margin)]
     if(sum(sum(sum(consider))) > 0):
         overlap += 1
