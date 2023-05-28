@@ -69,6 +69,23 @@ def create_plottable_cells2(detected_cells, plottable_cells_path, shape):
     np.save(plottable_cells_path, plottable_cells)
     #return plottable_cells
 
+#%%
+    
+def create_plottable_cells3(cells, shape):    
+    plottable_cells = np.zeros((shape[0], shape[1], shape[2]), dtype = np.uint8)    
+    i = 0
+    for line in cells:
+        if(i % 10000 == 0):
+            print("on the line", i)
+        x = line[0]
+        y = line[1]
+        z = line[2]
+        plottable_cells[(x, y, z)] = 1
+        i += 1   
+    #np.save(plottable_cells_path, plottable_cells)
+    return plottable_cells
+
+
 
 
 
