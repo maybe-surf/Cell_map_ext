@@ -17,7 +17,7 @@ fos = pd.DataFrame([])
 counts = {}
 
 for cell in fos.iterrows():
-    if(cell[0] % 10000 == 0):
+    if(cell[0] % 1000 == 0):
         print("processing cell", cell[0])
     cell = cell[1]
     consider = mecp2[mecp2["name"] == cell["name"]]
@@ -29,6 +29,57 @@ for cell in fos.iterrows():
             counts.update({cell["name"] : 1})
         break
     
-        
+#fos["min_dist_sq"] =        
     
+#%%
+import numpy as np
+cells_mecp2_path = ""
+cells_fos_path = ""
+create_plot_path = ""
+
+mecp2 = np.load(cells_mecp2_path)
+fos = np.load(cells_fos_path)
+
+exec(open(create_plot_path).read())
+
+shape = [2160, 2560, 1988]
+mecp2_full = [] #create_plottable_cells3(mecp2, shape)
+
+xy_margin = 4 #16 micron
+z_margin = 5 #15 micron
+
+overlap = 0
+
+for cell in fos:
+    consider = mecp2_full[(cell[0]-xy_margin):(cell[0]+xy_margin), (cell[1]-xy_margin):(cell[1]+xy_margin), (cell[2]-z_margin):(cell[2]+z_margin)]
+    if(sum(sum(sum(consider))) > 0):
+        overlap += 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
