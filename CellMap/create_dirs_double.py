@@ -5,7 +5,8 @@ Created on Mon May 22 19:54:51 2023
 @author: serge
 """
 
-dirs_path = "/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/drafts_reference/double_dirs.txt"
+#dirs_path = "/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/drafts_reference/double_dirs.txt"
+dirs_path = "/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/drafts_reference/double_dirs_over.txt"
 
 dirs = {}
 

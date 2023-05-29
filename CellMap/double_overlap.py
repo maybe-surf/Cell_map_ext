@@ -64,9 +64,14 @@ Created on Thu May 25 23:35:33 2023
 
 #%% load the data
 import numpy as np
-cells_mecp2_path = "/media/georgelab/LaCie/Lieselot_double/LC1R/C00-mecp2/cells.npy"
-cells_fos_path = "/media/georgelab/LaCie/Lieselot_double/LC1R/C01-fos/cells.npy"
+directory = ""
+mecp2_path = ""
+fos_path = ""
+cells_mecp2_path = mecp2_path + "/cells.npy"
+cells_fos_path = fos_path + "/cells.npy"
 create_plot_path = "/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/CellMap/create_plottable.py"
+
+out_path = directory + "count_overlap.csv"
 
 mecp2 = np.load(cells_mecp2_path)
 print("loaded mecp2")
@@ -130,7 +135,7 @@ def count_overlap_slice(cells_slice, full, xy_margin, z_margin, shape, qq):
     total = 0
     counts = {}
     for cell in cells_slice:
-        if(total % 100000 == 0):
+        if(total % 500000 == 0):
             print("on the cell", total)
         total += 1
         coords = create_slice(shape, cell[0], cell[1], cell[2], xy_margin, z_margin)
@@ -162,7 +167,7 @@ index = 9
 exec(open(create_plot_path).read())
 
 #%% fos in mecp2
-mecp2_full = create_plottable_cells3(mecp2, shape)
+mecp2_full = [] #create_plottable_cells3(mecp2, shape)
 print("created plottable mecp2")
 
 fos_list = np.array_split(fos, num_cores, axis = 0)
@@ -223,6 +228,25 @@ end = time.time()
 
 print("done with mecp2 in fos in", end-start)
 
+#%% Export
+import pandas as pd
+pd.options.mode.chained_assignment = None  # default='warn'
+
+fos_df = pd.DataFrame(fos_data[0])
+fos_df = fos_df.T
+fos_df.loc["total_fos"] = [fos_data[1], fos_data[2]]
+fos_df.rename(columns={0:"fos_in_mecp2", 1:"total_fos"}, inplace = True)
+fos_df["percent_fos"] = fos_df["fos_in_mecp2"]/fos_df["total_fos"]*100
+
+mecp2_df = pd.DataFrame(mecp2_data[0])
+mecp2_df = mecp2_df.T
+mecp2_df.loc["total_mecp2"] = [mecp2_data[1], mecp2_data[2]]
+mecp2_df.rename(columns={0:"mecp2_in_fos", 1:"total_mecp2"}, inplace = True)
+mecp2_df["percent_mecp2"] = fos_df["mecp2_in_fos"]/fos_df["total_mecp2"]*100
+
+o_merg = pd.concat([fos_df, mecp2_df], axis=1)
+
+o_merg.to_csv(out_path)
 
 
 
