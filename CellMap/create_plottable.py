@@ -75,7 +75,7 @@ def create_plottable_cells3(cells, shape):
     plottable_cells = np.zeros((shape[0], shape[1], shape[2]), dtype = np.uint8)    
     i = 0
     for line in cells:
-        if(i % 10000 == 0):
+        if(i % 500000 == 0):
             print("on the line", i)
         x = line[0]
         y = line[1]

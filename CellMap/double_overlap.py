@@ -64,8 +64,8 @@ Created on Thu May 25 23:35:33 2023
 
 #%% load the data
 import numpy as np
-cells_mecp2_path = "/media/georgelab/LaCie/Lieselot_double/LC3/C00-mecp2/cells_raw.npy"
-cells_fos_path = "/media/georgelab/LaCie/Lieselot_double/LC3/C01-fos/cells_raw.npy"
+cells_mecp2_path = "/media/georgelab/LaCie/Lieselot_double/LC1R/C00-mecp2/cells.npy"
+cells_fos_path = "/media/georgelab/LaCie/Lieselot_double/LC1R/C01-fos/cells.npy"
 create_plot_path = "/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/CellMap/create_plottable.py"
 
 mecp2 = np.load(cells_mecp2_path)
@@ -74,6 +74,22 @@ fos = np.load(cells_fos_path)
 print("loaded fos")
 
 #%% define functions
+
+def create_slice(shape, x, y, z, xy_margin, z_margin):
+    nums = [(x-xy_margin), (x+xy_margin), (y-xy_margin), (y+xy_margin), (z-z_margin), (z+z_margin)]
+    if(nums[0] < 0):
+        nums[0] = 0
+    if(nums[2] < 0):
+        nums[2] = 0
+    if(nums[4] < 0):
+        nums[4] = 0
+    if(nums[1] >= shape[0]):
+        nums[1] = shape[0]
+    if(nums[3] >= shape[1]):
+        nums[3] = shape[1]
+    if(nums[5] >= shape[2]):
+        nums[5] = shape[2]
+    return nums
 
 def add_to_dict(cell, counts, overlap):
     if(overlap):
@@ -114,11 +130,20 @@ def count_overlap_slice(cells_slice, full, xy_margin, z_margin, shape, qq):
     total = 0
     counts = {}
     for cell in cells_slice:
-        if(total % 50000):
+        if(total % 100000 == 0):
             print("on the cell", total)
         total += 1
-        consider = full[(cell[0]-xy_margin):(cell[0]+xy_margin), (cell[1]-xy_margin):(cell[1]+xy_margin), (cell[2]-z_margin):(cell[2]+z_margin)]
-        if(sum(sum(sum(consider))) > 0):
+        coords = create_slice(shape, cell[0], cell[1], cell[2], xy_margin, z_margin)
+        consider = full[coords[0]:coords[1], coords[2]:coords[3], coords[4]:coords[5]]
+        if(type(consider) == int):
+            test = consider
+        elif(len(consider.shape) == 1):
+            test = sum(consider)
+        elif(len(consider.shape) == 2):
+            test = sum(sum(consider))
+        else:
+            test = sum(sum(sum(consider)))
+        if(test > 0):
             overlap += 1
             add_to_dict(cell, counts, True)
         else:
@@ -129,15 +154,15 @@ def count_overlap_slice(cells_slice, full, xy_margin, z_margin, shape, qq):
 #%% prepare worksapce
 import multiprocessing as mp
 import time
-shape = [2160, 2560, 1988]
+shape = [2160, 2560, 1989]
 xy_margin = 2 #16 micron
 z_margin = 2 #15 micron
-num_cores = 10
+num_cores = 8
 index = 9
 exec(open(create_plot_path).read())
 
 #%% fos in mecp2
-mecp2_full = []#create_plottable_cells3(mecp2, shape)
+mecp2_full = create_plottable_cells3(mecp2, shape)
 print("created plottable mecp2")
 
 fos_list = np.array_split(fos, num_cores, axis = 0)
