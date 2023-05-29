@@ -146,6 +146,7 @@ fos_res = []
 qq = mp.Queue()
 processes = []
 
+start = time.time()
 for fos_slice in fos_list:
     p = mp.Process(target = count_overlap_slice, args = (fos_slice, mecp2_full, xy_margin, z_margin, shape, qq))
     processes.append(p)
@@ -162,8 +163,9 @@ for p in processes:
     p.join()
 
 fos_data = merge_res(fos_res)
+end = time.time()
 
-print("done with fos in mecp2")
+print("done with fos in mecp2 in", end-start)
 
 #%% mecp2 in fos
 fos_full = []#create_plottable_cells3(fos, shape)
@@ -175,6 +177,7 @@ mecp2_res = []
 qq = mp.Queue()
 processes = []
 
+start = time.time()
 for mecp2_slice in mecp2_list:
     p = mp.Process(target = count_overlap_slice, args = (mecp2_slice, fos_full, xy_margin, z_margin, shape, qq))
     processes.append(p)
@@ -191,8 +194,9 @@ for p in processes:
     p.join()
 
 mecp2_data = merge_res(mecp2_res)
+end = time.time()
 
-print("done with mecp2 in fos")
+print("done with mecp2 in fos in", end-start)
 
 
 
