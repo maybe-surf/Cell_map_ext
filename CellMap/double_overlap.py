@@ -64,14 +64,11 @@ Created on Thu May 25 23:35:33 2023
 
 #%% load the data
 import numpy as np
-directory = ""
-mecp2_path = ""
-fos_path = ""
 cells_mecp2_path = mecp2_path + "/cells.npy"
 cells_fos_path = fos_path + "/cells.npy"
 create_plot_path = "/home/georgelab/Documents/Lieselot/Sergei/Cell_map_ext/CellMap/create_plottable.py"
 
-out_path = directory + "count_overlap.csv"
+out_path = directory + "/count_overlap.csv"
 
 mecp2 = np.load(cells_mecp2_path)
 print("loaded mecp2")
@@ -159,7 +156,7 @@ def count_overlap_slice(cells_slice, full, xy_margin, z_margin, shape, qq):
 #%% prepare worksapce
 import multiprocessing as mp
 import time
-shape = [2160, 2560, 1989]
+#shape = [2160, 2560, 1989]
 xy_margin = 2 #16 micron
 z_margin = 2 #15 micron
 num_cores = 8
@@ -167,7 +164,7 @@ index = 9
 exec(open(create_plot_path).read())
 
 #%% fos in mecp2
-mecp2_full = [] #create_plottable_cells3(mecp2, shape)
+mecp2_full = create_plottable_cells3(mecp2, shape)
 print("created plottable mecp2")
 
 fos_list = np.array_split(fos, num_cores, axis = 0)
@@ -198,7 +195,7 @@ end = time.time()
 print("done with fos in mecp2 in", end-start)
 
 #%% mecp2 in fos
-fos_full = []#create_plottable_cells3(fos, shape)
+fos_full = create_plottable_cells3(fos, shape)
 print("created plottable fos")
 
 mecp2_list = np.array_split(mecp2, num_cores, axis = 0)
@@ -242,7 +239,7 @@ mecp2_df = pd.DataFrame(mecp2_data[0])
 mecp2_df = mecp2_df.T
 mecp2_df.loc["total_mecp2"] = [mecp2_data[1], mecp2_data[2]]
 mecp2_df.rename(columns={0:"mecp2_in_fos", 1:"total_mecp2"}, inplace = True)
-mecp2_df["percent_mecp2"] = fos_df["mecp2_in_fos"]/fos_df["total_mecp2"]*100
+mecp2_df["percent_mecp2"] = mecp2_df["mecp2_in_fos"]/mecp2_df["total_mecp2"]*100
 
 o_merg = pd.concat([fos_df, mecp2_df], axis=1)
 
