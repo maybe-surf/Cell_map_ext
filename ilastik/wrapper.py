@@ -24,10 +24,10 @@ exec(open(create_dirs_path).read())
 #%% run analysis
 
 num_brains = 0
-limit = 5
+limit = 0
 
 for brain in dirs.keys():
-    if(num_brains < 1):
+    if(num_brains < 5):
         num_brains += 1
         continue
     brain_dirs = dirs.get(brain)
@@ -38,7 +38,9 @@ for brain in dirs.keys():
     from ClearMap.Environment import *  #analysis:ignore
   
     #directories and files
-    directory = brain_dirs.get("dir_brain")  #1 animal  
+    directory = brain_dirs.get("dir_brain")  #1 animal 
+    
+    print("processing brain at", directory)
   
     expression_raw      = brain_dirs.get("dir_raw")     #neurons      
     expression_auto     = brain_dirs.get("dir_auto")  #structure    
@@ -65,5 +67,5 @@ for brain in dirs.keys():
     exec(open(pipeline2_path).read())
     
     num_brains += 1
-    if(num_brains == limit):
-        break
+#    if(num_brains == limit):
+#        break
