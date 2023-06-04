@@ -27,7 +27,7 @@ num_brains = 0
 limit = 0
 
 for brain in dirs.keys():
-    if(num_brains < 5):
+    if(num_brains < 6):
         num_brains += 1
         continue
     brain_dirs = dirs.get(brain)
@@ -57,11 +57,12 @@ for brain in dirs.keys():
     
     data_path = directory + "/stitched.npy"
     output_path = directory + "/cells_detected.npy" #check the file name
+    cells_raw_path = directory + "/cells_raw_i.npy"
     
     #tester directories
     #data_path = directory + "/ilastik/test.npy"
     #output_path = directory + "/ilastik/cells_detected.npy"
-    
+         
     exec(open(cell_detection_path).read())
     
     exec(open(pipeline2_path).read())
