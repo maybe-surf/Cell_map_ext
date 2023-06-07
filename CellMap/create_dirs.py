@@ -38,7 +38,7 @@ for line in file2:
     line_list = line.split("_")
     if(i % 2 == 0):
         num = int(line_list[1][1:3])
-        dirs[num] = {"dir_brain" : "/media/georgelab/Rett1/Lieselot_Box2/R" + str(num)}
+        dirs[num] = {"dir_brain" : "/media/georgelab/Rett1/Lieselot_Collab/R" + str(num)}
         if("red" in line_list[1].lower()):
             dirs[num].update({"dir_raw" : "/" + line + "/" + line_list[2] + "_" + line_list[1] + "_UltraII_C00_xyz-Table Z<Z,4>.ome.tif"})
         else:

@@ -27,7 +27,7 @@ num_brains = 0
 limit = 0
 
 for brain in dirs.keys():
-    if(num_brains < 6):
+    if(num_brains < 20):
         num_brains += 1
         continue
     brain_dirs = dirs.get(brain)
