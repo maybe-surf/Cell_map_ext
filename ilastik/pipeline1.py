@@ -43,7 +43,7 @@ resample_parameter_auto = {
       "orientation":(-1,2,3) 
       };   
   
-res.resample(ws.filename('autofluorescence'), sink=ws.filename('resampled', postfix='autofluorescence'), **resample_parameter_auto)
+res.resample(expression_auto, sink=ws.filename('resampled', postfix='autofluorescence'), **resample_parameter_auto)
 
  
  #%% Aignment - resampled to autofluorescence (>2min - update elastix to v5 for improved speed?)

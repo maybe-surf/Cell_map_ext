@@ -21,69 +21,70 @@ exec(open(create_dirs_path).read())
 #%% run analysis
 
 num_brains = 0
-limit = 7
+limit = 20
 
 for brain in dirs.keys():
+    if(num_brains < 1):
+        num_brains += 1
+        continue
+    
     brain_dirs = dirs.get(brain)
     
-    #mecp2
-#    import sys 
-#    sys.path.append('/home/georgelab/Documents/ClearMap2')
-#  
-#    from ClearMap.Environment import *  #analysis:ignore
+    # Initialize ClearMap
+    import sys 
+    sys.path.append('/home/georgelab/Documents/ClearMap2')
   
-    #directories and files
+    from ClearMap.Environment import *  #analysis:ignore
+  
+    #mecp2 workspace
     directory = brain_dirs.get("dir_brain") + "/C00-mecp2"  #1 animal  
+       
+    expression_auto     = brain_dirs.get("dir_brain") + brain_dirs.get("dir_auto")  #structure    
   
-#    expression_raw      = brain_dirs.get("dir_mecp2")     #neurons      
-#    expression_auto     = brain_dirs.get("dir_auto")  #structure    
-#  
-#    ws = wsp.Workspace('CellMap', directory=directory);
-#    ws.update(raw=expression_raw, autofluorescence=expression_auto)
-#    ws.info()
-#  
-#    ws.debug = False
-#  
-#    resources_directory = settings.resources_path
+    ws = wsp.Workspace('CellMap', directory=directory);
+    ws.update(autofluorescence=expression_auto)
+    ws.info()
+  
+    ws.debug = False
+  
+    resources_directory = settings.resources_path
     
-    #exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
+    print("begin analyzing mecp2 in " + directory)
+    
+    exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
     
     data_path = directory + "/stitched.npy"
     output_path = directory + "/cells_detected.npy" #check the file name
     cells_raw_path = directory + "/cells_raw_i.npy"
     
-    #exec(open(pipeline1_path).read())
     exec(open(cell_detection_path).read())
     
-    #exec(open(pipeline2_path).read())
+    exec(open(pipeline2_path).read())
     
-    #foss
-  
-    #directories and files
+    #foss workspace
     directory = brain_dirs.get("dir_brain") + "/C01-fos"  #1 animal  
   
-#    expression_raw      = brain_dirs.get("dir_foss")     #neurons      
-#    expression_auto     = brain_dirs.get("dir_auto")  #structure    
-#  
-#    ws = wsp.Workspace('CellMap', directory=directory);
-#    ws.update(raw=expression_raw, autofluorescence=expression_auto)
-#    ws.info()
-#  
-#    ws.debug = False
-#  
-#    resources_directory = settings.resources_path
+    expression_auto     = brain_dirs.get("dir_brain") + brain_dirs.get("dir_auto")  #structure          
+  
+    ws = wsp.Workspace('CellMap', directory=directory);
+    ws.update(autofluorescence=expression_auto)
+    ws.info()
+  
+    ws.debug = False
+  
+    resources_directory = settings.resources_path
     
-    #exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
+    print("begin analyzing fos in " + directory)
+    
+    exec(open(pipeline1_path).read()) #runs the CellMap pipeline up to cell_detection
     
     data_path = directory + "/stitched.npy"
     output_path = directory + "/cells_detected.npy" #check the file name
     cells_raw_path = directory + "/cells_raw_i.npy"
     
-    #exec(open(pipeline1_path).read())
-    
     exec(open(cell_detection_path).read())
     
-   # exec(open(pipeline2_path).read())
+    exec(open(pipeline2_path).read())
     
     num_brains += 1
     if(num_brains == limit):
