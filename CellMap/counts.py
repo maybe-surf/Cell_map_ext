@@ -23,16 +23,20 @@ exec(open(create_dirs_path).read())
 #%%
 def get_counts(directory, folder):
     import pandas as pd
+    import os.path
+    if(not os.path.isfile(directory + '/cells_i.csv')):
+        print("not analyzed with ilastik")
+        return
     brain_dir = directory.split('/')
     brain_name = brain_dir[-1]
-    df = pd.read_csv (directory + '/cells.csv', error_bad_lines=False, index_col=False)
+    df = pd.read_csv (directory + '/cells_i.csv', error_bad_lines=False, index_col=False)
     counts = df[' n'].value_counts()
     counts = counts.to_frame()
     counts.index.name = 'region'
     counts.reset_index(inplace=True)
     counts = counts.rename(columns={" n" : brain_name})
-    counts.to_csv(directory + 'counts_ilastik_' + brain_name + '.csv', index = False)
-    counts.to_csv(folder + 'counts_' + brain_name + '.csv', index = False) 
+    counts.to_csv(directory + '/counts_i_' + brain_name + '.csv', index = False)
+    counts.to_csv(folder + '/counts_' + brain_name + '.csv', index = False) 
 
 #%% run analysis
 
@@ -48,7 +52,7 @@ for brain in dirs.keys():
     #directories and files
     directory = brain_dirs.get("dir_brain")  #1 animal 
     print("processing brain at", directory)
-    folder = ""
+    folder = "/media/georgelab/Rett1/Counts_ilastik"
     
     get_counts(directory, folder)
     
